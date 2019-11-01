@@ -8,7 +8,7 @@ GAME RULES:
 - The first player to reach 100 points on GLOBAL score wins the game
 
 */
-let scores, roundScore, activePlayer;
+let scores, roundScore, activePlayer, gamePlay;
 init();
 // let scores = [0, 0];
 // let roundScore = 0;
@@ -35,46 +35,66 @@ function btn() {}
 
 // get element by id is faster than query selector;
 document.querySelector('.btn-roll').addEventListener('click', function() {
-  // random number
-  let dice = Math.floor(Math.random() * 6) + 1;
-  // display result ;
-  let diceDOM = document.querySelector('.dice');
-  diceDOM.style.display = 'block';
-  diceDOM.src = 'dice-' + dice + '.png';
-  // update round score if the roll num is not 1
-  if (dice !== 1) {
-    roundScore += dice;
-    document.querySelector('#current-' + activePlayer).textContent = roundScore;
-  } else {
-    roundScore = 0;
-    document.querySelector('#current-' + activePlayer).textContent = roundScore;
-    //
-    nextPlayer();
+  if (gamePlay) {
+    // random number
+    let dice = Math.floor(Math.random() * 6) + 1;
+    // display result ;
+    let diceDOM = document.querySelector('.dice');
+    diceDOM.style.display = 'block';
+    diceDOM.src = 'dice-' + dice + '.png';
+    // update round score if the roll num is not 1
+    if (dice !== 1) {
+      roundScore += dice;
+      document.querySelector(
+        '#current-' + activePlayer
+      ).textContent = roundScore;
+    } else {
+      roundScore = 0;
+      document.querySelector(
+        '#current-' + activePlayer
+      ).textContent = roundScore;
+      //
+      nextPlayer();
+    }
   }
 });
 
 document.querySelector('.btn-hold').addEventListener('click', function() {
   // add current score to global score of user;
-  scores[activePlayer] += roundScore;
-  // update the ui ;
-  document.getElementById('score-' + activePlayer).textContent =
-    scores[activePlayer];
+  if (gamePlay) {
+    scores[activePlayer] += roundScore;
+    // update the ui ;
+    document.getElementById('score-' + activePlayer).textContent =
+      scores[activePlayer];
 
-  // check if player won the game ;
-  if (scores[activePlayer] >= 100) {
-    document.getElementById('name-' + activePlayer).textContent = 'Winner!';
-    document.querySelector('.dice').style.display = 'none';
-    document
-      .querySelector('player-' + activePlayer + '-panel')
-      .classList.add('winner');
-    document
-      .querySelector('player-' + activePlayer + '-panel')
-      .classList.remove('active');
+    // check if player won the game ;
+    if (scores[activePlayer] >= 100) {
+      document.getElementById('name-' + activePlayer).textContent = 'Winner!';
+      document.querySelector('.dice').style.display = 'none';
+      document
+        .querySelector('player-' + activePlayer + '-panel')
+        .classList.add('winner');
+      document
+        .querySelector('player-' + activePlayer + '-panel')
+        .classList.remove('active');
+      gamePlay = false;
+    }
+    nextPlayer();
   }
-  nextPlayer();
 });
 
 document.querySelector('.btn-new').addEventListener('click', init);
+
+function nextPlayer() {
+  document
+    .querySelector(`.player-${activePlayer}-panel`)
+    .classList.toggle('active');
+  activePlayer === 0 ? (activePlayer = 1) : (activePlayer = 0);
+  document
+    .querySelector(`.player-${activePlayer}-panel`)
+    .classList.toggle('active');
+  document.querySelector('.dice').style.display = 'none';
+}
 
 function init() {
   scores = [0, 0];
@@ -92,17 +112,6 @@ function init() {
   document.querySelector('.player-0-panel').classList.remove('active');
   document.querySelector('.player-1-panel').classList.remove('active');
   document.querySelector('.player-0-panel').classList.add('active');
+  gamePlay = true;
 }
-
-function nextPlayer() {
-  document
-    .querySelector(`.player-${activePlayer}-panel`)
-    .classList.toggle('active');
-  activePlayer === 0 ? (activePlayer = 1) : (activePlayer = 0);
-  document
-    .querySelector(`.player-${activePlayer}-panel`)
-    .classList.toggle('active');
-  document.querySelector('.dice').style.display = 'none';
-}
-
 //

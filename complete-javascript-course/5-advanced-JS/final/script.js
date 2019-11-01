@@ -32,8 +32,6 @@ console.log(jane.lastName);
 console.log(mark.lastName);
 */
 
-
-
 /////////////////////////////
 // Lecture: Object.create
 /*
@@ -54,8 +52,6 @@ var jane = Object.create(personProto, {
     job: { value: 'designer' }
 });
 */
-
-
 
 /////////////////////////////
 // Lecture: Primitives vs objects
@@ -97,8 +93,6 @@ console.log(age);
 console.log(obj.city);
 */
 
-
-
 /////////////////////////////
 // Lecture: Passing functions as arguments
 /*
@@ -137,8 +131,6 @@ console.log(ages);
 console.log(rates);
 */
 
-
-
 /////////////////////////////
 // Lecture: Functions returning functions
 /*
@@ -171,8 +163,6 @@ designerQuestion('Mike');
 interviewQuestion('teacher')('Mark');
 */
 
-
-
 /////////////////////////////
 // Lecture: IIFE
 /*
@@ -196,8 +186,6 @@ game();
     console.log(score >= 5 - goodLuck);
 })(5);
 */
-
-
 
 /////////////////////////////
 // Lecture: Closures
@@ -235,8 +223,6 @@ function interviewQuestion(job) {
 
 interviewQuestion('teacher')('John');
 */
-
-
 
 /////////////////////////////
 // Lecture: Bind, call and apply
@@ -300,12 +286,8 @@ console.log(ages);
 console.log(fullJapan);
 */
 
-
-
-
 /////////////////////////////
 // CODING CHALLENGE
-
 
 /*
 --- Let's build a fun quiz game in the console! ---
@@ -327,7 +309,6 @@ c) correct answer (I would use a number for this)
 
 7. Suppose this code would be a plugin for other programmers to use in their code. So make sure that all your code is private and doesn't interfere with the other programmers code (Hint: we learned a special technique to do exactly that).
 */
-
 
 /*
 (function() {
@@ -378,8 +359,6 @@ c) correct answer (I would use a number for this)
 })();
 */
 
-
-
 /*
 --- Expert level ---
 
@@ -391,7 +370,6 @@ c) correct answer (I would use a number for this)
 
 11. Display the score in the console. Use yet another method for this.
 */
-
 
 /*
 (function() {
