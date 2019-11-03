@@ -1,5 +1,6 @@
 // Global app controller
 import Search from './models/Search';
+import Recipe from './models/Recipe';
 import * as SearchView from './views/SearchView';
 import { els, renderLoader, clearLoader } from './views/base';
 //
@@ -13,7 +14,7 @@ const state = {
   current: '',
   shopping: ''
 };
-
+// --------------------------- SEARCH -----------------------------
 const controlSearch = async () => {
   // get query from the view
   const q = SearchView.getInput();
@@ -28,13 +29,18 @@ const controlSearch = async () => {
     // --- clear last results
     SearchView.clearResults();
     renderLoader(els.searchResults);
-
-    // search for recipes
-    await state.search.getResult();
-
-    // render result to ui
-    clearLoader();
-    SearchView.renderResults(state.search.results);
+    try {
+      
+      // search for recipes
+      await state.search.getResult();
+  
+      // render result to ui
+      clearLoader();
+      SearchView.renderResults(state.search.results);
+    } catch (error) {
+      console.log(error);
+      clearLoader();
+    }
   }
 };
 
@@ -51,3 +57,37 @@ els.searchResultsPages.addEventListener('click', e => {
     SearchView.renderResults(state.search.results, goToPage);
   }
 });
+
+// -------------------------------------------------------------------
+
+// -------------------------- GET Recipe ----------------------------
+// respond to hashchange event
+// for read data from url
+// how to add same event listener to multiple events.
+
+const controlRecipe = () => {
+  // get id from url
+  const id = window.location.hash.replace('#', '');
+  if (id) {
+    // create recipe object.
+    state.recipe = new Recipe(id);
+    try {
+      // get recipe data
+      await state.recipe.getRecipe();
+  
+      // calculate serving time 
+      state.recipe.calcTime();
+      state.recipe.calcServings();
+  
+      // render recipe
+      console.log(state.recipe);
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+};
+
+['hashchange', 'load'].forEach(e => window.addEventListener(e, controlRecipe));
+
+// ------------------------------------------------------------------
