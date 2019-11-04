@@ -2,18 +2,15 @@
 import Search from './models/Search';
 import Recipe from './models/Recipe';
 import * as SearchView from './views/SearchView';
+import * as RecipeView from './views/RecipeView';
 import { els, renderLoader, clearLoader } from './views/base';
-//
+// ------------------------------------------------------------
 // globe state of app;
 // search object
 // current recipe
 // shopping list
 // like recipe
-const state = {
-  search: {},
-  current: '',
-  shopping: ''
-};
+const state = {};
 // --------------------------- SEARCH -----------------------------
 const controlSearch = async () => {
   // get query from the view
@@ -30,10 +27,9 @@ const controlSearch = async () => {
     SearchView.clearResults();
     renderLoader(els.searchResults);
     try {
-      
       // search for recipes
       await state.search.getResult();
-  
+
       // render result to ui
       clearLoader();
       SearchView.renderResults(state.search.results);
@@ -48,7 +44,7 @@ els.searchForm.addEventListener('submit', e => {
   e.preventDefault();
   controlSearch();
 });
-
+// btns under list show pagination
 els.searchResultsPages.addEventListener('click', e => {
   const btn = e.target.closest('.btn-inline');
   if (btn) {
@@ -65,23 +61,25 @@ els.searchResultsPages.addEventListener('click', e => {
 // for read data from url
 // how to add same event listener to multiple events.
 
-const controlRecipe = () => {
+const controlRecipe = async () => {
   // get id from url
   const id = window.location.hash.replace('#', '');
   if (id) {
+    RecipeView.clearRecipe();
+    renderLoader(els.recipe);
     // create recipe object.
     state.recipe = new Recipe(id);
     try {
       // get recipe data
       await state.recipe.getRecipe();
-  
-      // calculate serving time 
+      state.recipe.parseIngredients();
+      // calculate serving time
       state.recipe.calcTime();
       state.recipe.calcServings();
-  
+
       // render recipe
-      console.log(state.recipe);
-      
+      clearLoader();
+      RecipeView.renderRecipe(state.recipe);
     } catch (error) {
       console.log(error);
     }
