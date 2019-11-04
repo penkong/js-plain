@@ -67,6 +67,11 @@ const controlRecipe = async () => {
   if (id) {
     RecipeView.clearRecipe();
     renderLoader(els.recipe);
+
+    if (state.search) {
+      SearchView.highLightedSelected(id);
+    }
+
     // create recipe object.
     state.recipe = new Recipe(id);
     try {
@@ -87,5 +92,21 @@ const controlRecipe = async () => {
 };
 
 ['hashchange', 'load'].forEach(e => window.addEventListener(e, controlRecipe));
+
+// handling recipe btn clicks
+els.recipe.addEventListener('click', e => {
+  if (e.target.matches('.btn-decrease, .btn-decrease *')) {
+    // decrease is click
+    if (state.recipe.servings) {
+      state.recipe.updateServings('dec');
+      RecipeView.updateServingsIngredients(state.recipe);
+    }
+  }
+  if (e.target.matches('.btn-increase, .btn-increase *')) {
+    // increase is click
+    state.recipe.updateServings('inc');
+    RecipeView.updateServingsIngredients(state.recipe);
+  }
+});
 
 // ------------------------------------------------------------------
