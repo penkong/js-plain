@@ -21,9 +21,5 @@ const getCity = async city => {
   const data = await response.json();
   return data[0];
 };
-const key = getCity('berlin')
-  .then(data => {
-    return getWeather(data.Key);
-  })
-  .then(data => console.log(data))
-  .catch(err => console.log(err));
+
+// ------------------------------------------------------------------
