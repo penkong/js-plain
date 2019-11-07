@@ -20,4 +20,8 @@ class ChatUI {
     `;
     this.list.innerHTML += markup;
   }
+
+  clearChats() {
+    this.list.innerHTML = '';
+  }
 }
