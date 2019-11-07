@@ -12,7 +12,23 @@ module.exports = {
     publicPath: 'pathOrUrlWhenProductionBuild'
   },
   module: {
-    rules: []
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env']
+          }
+        }
+      }
+    ]
+  },
+  devServer: {
+    contentBase: path.resolve(__dirname, 'dist'),
+    // where the actual assets serve from
+    publicPath: '/assets/'
   },
   resolve: {},
   devtool: 'source-map',
