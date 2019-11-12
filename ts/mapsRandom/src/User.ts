@@ -2,7 +2,7 @@
 // type definition file. @types/{lib name} from definitely type project.
 import faker from "faker";
 
-class User {
+export class User {
   name: string;
   location: {
     lat: number;
