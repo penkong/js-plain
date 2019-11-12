@@ -1,0 +1,17 @@
+{
+  "name": "maps",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "parcel": "parcel index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/faker": "^4.1.7",
+    "faker": "^4.1.0",
+    "typescript": "^3.7.2"
+  }
+}
