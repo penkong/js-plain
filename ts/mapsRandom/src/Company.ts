@@ -1,8 +1,9 @@
 // you must get types for every package for let ts know to help you.
 // type definition file. @types/{lib name} from definitely type project.
 import faker from "faker";
+import { Mappable } from "./Map";
 
-export class Company {
+export class Company implements Mappable {
   companyName: string;
   catchPhrase: string;
   location: {
@@ -21,5 +22,9 @@ export class Company {
       lat: parseFloat(latitude()),
       lng: parseFloat(longitude())
     };
+  }
+
+  public markerContent(): string {
+    return `User name : ${this.companyName} and catchPhraase: ${this.catchPhrase}`;
   }
 }
