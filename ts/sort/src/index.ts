@@ -6,12 +6,19 @@
 import { Sorter } from "./sorter";
 import { NumbersCollection } from "./NumbersCollection";
 import { CharactersCollection } from "./CharactersCollection";
+import { LinkedListCollection } from "./LinkedListCollection";
 //
+// const sorter = new Sorter(numbersCollection);
 const numbersCollection = new NumbersCollection([10, 3, -5, 0]);
-const sorter = new Sorter(numbersCollection);
-sorter.sort();
+numbersCollection.sort();
 console.log(numbersCollection.data);
-const charactersCollection = new CharactersCollection("fsdfsdfFsS");
-const sorterString = new Sorter(charactersCollection);
-sorterString.sort();
-console.log(charactersCollection.data);
+//
+// const charactersCollection = new CharactersCollection("fsdfsdfFsS");
+//
+// const linkedListCollection = new LinkedListCollection();
+// linkedListCollection.add(500);
+// linkedListCollection.add(50);
+// linkedListCollection.add(-10);
+// linkedListCollection.add(-20);
+
+// linkedListCollection.print();

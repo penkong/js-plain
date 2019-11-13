@@ -1,8 +1,10 @@
-import { Sortable } from "./sorter";
+import { Sorter } from "./sorter";
 
 //
-export class CharactersCollection implements Sortable {
-  constructor(public data: string) {}
+export class CharactersCollection extends Sorter {
+  constructor(public data: string) {
+    super();
+  }
 
   // get will call like collectin.length
   get length(): number {
