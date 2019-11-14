@@ -1,24 +1,37 @@
 import { dateStringToDate } from "./utils";
 // it is enum
 import { MatchResult } from "./MatchResult";
-import { CsvReader } from "./CsvReader";
+//
+
+export interface DataReader {
+  read(): void;
+  data: string[][];
+}
+
 //
 type MatchData = [Date, string, string, number, number, MatchResult, string];
 
 //
-export class MatchReader extends CsvReader<MatchData> {
-  data: MatchData[] = [];
+export class MatchReader {
+  matches: MatchData[] = [];
+  // this.reader
+  constructor(public reader: DataReader) {}
 
-  mapRow(row: string[]): MatchData {
-    return [
-      dateStringToDate(row[0]),
-      row[1],
-      row[2],
-      parseInt(row[3]),
-      parseInt(row[4]),
-      // type assertion // 'H' "A" "D"
-      row[5] as MatchResult,
-      row[6]
-    ];
+  load(): void {
+    this.reader.read();
+    this.matches = this.reader.data.map(
+      (row: string[]): MatchData => {
+        return [
+          dateStringToDate(row[0]),
+          row[1],
+          row[2],
+          parseInt(row[3]),
+          parseInt(row[4]),
+          // type assertion // 'H' "A" "D"
+          row[5] as MatchResult,
+          row[6]
+        ];
+      }
+    );
   }
 }
