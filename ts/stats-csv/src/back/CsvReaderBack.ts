@@ -1,6 +1,6 @@
 import fs from "fs";
 // it is enum
-import { MatchResult } from "./MatchResult";
+import { MatchResult } from "../Enums/MatchResult";
 //
 type MatchData = [Date, string, string, number, number, MatchResult, string];
 

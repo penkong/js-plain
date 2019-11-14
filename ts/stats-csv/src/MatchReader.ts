@@ -1,15 +1,13 @@
-import { dateStringToDate } from "./utils";
+import { dateStringToDate } from "./utils/utils";
 // it is enum
-import { MatchResult } from "./MatchResult";
+import { MatchResult } from "./Enums/MatchResult";
+import { MatchData } from "./types/MatchData";
 //
 
 export interface DataReader {
   read(): void;
   data: string[][];
 }
-
-//
-type MatchData = [Date, string, string, number, number, MatchResult, string];
 
 //
 export class MatchReader {
