@@ -13,12 +13,12 @@ export interface DataReader {
 //
 export class MatchReader {
   matches: MatchData[] = [];
-  // this.reader
-  constructor(public reader: DataReader) {}
   // use static for pre configure classes
   static fromCsv(filename: string): MatchReader {
     return new MatchReader(new CsvReader(filename));
   }
+  // this.reader
+  constructor(public reader: DataReader) {}
 
   load(): void {
     this.reader.read();
