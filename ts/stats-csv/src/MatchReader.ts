@@ -2,6 +2,7 @@ import { dateStringToDate } from "./utils/utils";
 // it is enum
 import { MatchResult } from "./Enums/MatchResult";
 import { MatchData } from "./types/MatchData";
+import { CsvReader } from "./CsvReader";
 //
 
 export interface DataReader {
@@ -14,6 +15,10 @@ export class MatchReader {
   matches: MatchData[] = [];
   // this.reader
   constructor(public reader: DataReader) {}
+  // use static for pre configure classes
+  static fromCsv(filename: string): MatchReader {
+    return new MatchReader(new CsvReader(filename));
+  }
 
   load(): void {
     this.reader.read();
