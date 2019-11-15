@@ -12,6 +12,8 @@ export class UserForm extends View<User, UserProps> {
     };
   }
 
+  // ---------------------------------------------
+  // events must be arrow funcs
   public onSaveClick = (): void => {
     this.model.save();
   };
@@ -27,15 +29,19 @@ export class UserForm extends View<User, UserProps> {
   public onSetAgeClick = (): void => {
     this.model.setRandomAge();
   };
+  // -----------------------------------------------------
 
   public template(): string {
     return `
       <div>
         <input placeholder="${this.model.get("name")}"/>
         <br>
+        <br>
         <button class="set-name">update name</button>
         <br>
+        <br>
         <button class="set-age">set random age</button>
+        <br>
         <br>
         <button class="save-model">save</button>
       </div>
