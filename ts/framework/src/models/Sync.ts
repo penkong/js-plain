@@ -5,7 +5,7 @@ interface HasId {
 }
 
 //
-// this is constraints on T
+// this is constraints on T generic constriaints
 export class Sync<T extends HasId> {
   constructor(public url: string) {}
 

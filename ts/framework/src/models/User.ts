@@ -1,6 +1,6 @@
 import { Eventing, Cb } from "./Eventing";
-import { Sync } from "./Sync";
 import { Attributes } from "./Atrributes";
+import { Sync } from "./Sync";
 import { AxiosResponse, AxiosError } from "axios";
 
 //
@@ -14,13 +14,13 @@ const url = "http://localhost:3000/users";
 //
 export class User {
   public events: Eventing = new Eventing();
-  public sync: Sync<UserProps> = new Sync<UserProps>(url);
   public attributes: Attributes<UserProps>;
+  public sync: Sync<UserProps> = new Sync<UserProps>(url);
   // get or set are accessors
   constructor(attrs: UserProps) {
     this.attributes = new Attributes<UserProps>(attrs);
   }
-
+  // ----------EVENTING-----------
   public get on() {
     return this.events.on;
   }
@@ -28,7 +28,7 @@ export class User {
   public get trigger() {
     return this.events.trigger;
   }
-
+  // ---------ATTRIBUTES-------------
   public get get() {
     return this.attributes.get;
   }
@@ -37,16 +37,21 @@ export class User {
     this.attributes.set(update);
     this.events.trigger("change");
   }
-
+  // --------SYNC------------
   public fetch(): void {
     const id = this.attributes.get("id");
+    // if there is no id , undefined null
     if (typeof id !== "number") {
       throw new Error("can not fetch without an id");
     }
 
-    this.sync.fetch(id).then((res: AxiosResponse): void => {
-      this.set(res.data);
-    });
+    this.sync
+      .fetch(id)
+      .then((res: AxiosResponse): void => {
+        // set and trigger change
+        this.set(res.data);
+      })
+      .catch((err: AxiosError): void => console.log(err));
   }
 
   public save(): void {
