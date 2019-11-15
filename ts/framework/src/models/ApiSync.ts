@@ -4,7 +4,6 @@ interface HasId {
   id?: number;
 }
 
-//
 // this is constraints on T generic constriaints
 export class ApiSync<T extends HasId> {
   constructor(public url: string) {}

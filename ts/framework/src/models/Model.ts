@@ -20,35 +20,38 @@ interface Events {
 interface HasId {
   id?: number;
 }
-//
 // this is type alias
 type Cb = () => void;
 //
-
 export class Model<T extends HasId> {
   // get or set are accessors
+  // ----- remember after transpile class to func constructor exec after
+  // all methods if we use init that before constructor but if we define fields initially
+  // inside constructor we can use shorter syntax, therefor consider if you use  it.
   constructor(
     private attributes: ModelAttributes<T>,
     private events: Events,
     private sync: Sync<T>
   ) {}
-  // ----------EVENTING-----------
-  public get on() {
-    return this.events.on;
-  }
 
-  public get trigger() {
-    return this.events.trigger;
-  }
+  // ----------EVENTING-----------
+  // public get on() {
+  //   return this.events.on;
+  // }
+  // if we assign real class in constructor we can not use  this shorter
+  // syntax but because of interfce we can do it becsue it is initialization
+  on = this.events.on;
+
+  trigger = this.events.trigger;
+
   // ---------ATTRIBUTES-------------
-  public get get() {
-    return this.attributes.get;
-  }
+  get = this.attributes.get;
 
   public set(update: T): void {
     this.attributes.set(update);
     this.events.trigger("change");
   }
+
   // --------SYNC------------
   public fetch(): void {
     const id = this.attributes.get("id");
@@ -56,7 +59,7 @@ export class Model<T extends HasId> {
     if (typeof id !== "number") {
       throw new Error("can not fetch without an id");
     }
-
+    // exec
     this.sync
       .fetch(id)
       .then((res: AxiosResponse): void => {

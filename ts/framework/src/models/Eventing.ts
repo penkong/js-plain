@@ -1,8 +1,5 @@
-//
-
 // this is type alias
 export type Cb = () => void;
-
 //
 export class Eventing {
   events: { [key: string]: Cb[] } = {};

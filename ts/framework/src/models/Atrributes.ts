@@ -1,6 +1,4 @@
 // interface is structure of an object
-
-//
 export class Attributes<T> {
   constructor(private data: T) {}
   // type assertion ===>> (as number) or (as sth)
