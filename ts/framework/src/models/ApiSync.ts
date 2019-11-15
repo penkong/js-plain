@@ -6,7 +6,7 @@ interface HasId {
 
 //
 // this is constraints on T generic constriaints
-export class Sync<T extends HasId> {
+export class ApiSync<T extends HasId> {
   constructor(public url: string) {}
 
   public fetch(id: number): AxiosPromise {

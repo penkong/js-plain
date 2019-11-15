@@ -1,6 +1,6 @@
 import { User } from "./models/User";
-
+// for make model and generalize works use composition
+// when we want customize use inheritance.
 //
-const user = new User({ name: "redcodr", age: 30 });
-
-console.log(user.get("name"));
+const user = User.buildUser({ name: "mkz", age: 30 });
+// user.save();
