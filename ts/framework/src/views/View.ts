@@ -5,11 +5,21 @@ interface ViewModel {
 }
 //
 export abstract class View<T extends Model<K>, K> {
-  abstract template(): string;
+  regions: { [key: string]: Element } = {};
 
   constructor(public parent: Element, public model: T) {
     // do this on creation == created
     this.bindModel();
+  }
+
+  abstract template(): string;
+
+  public regionsMap(): { [key: string]: string } {
+    return {};
+  }
+
+  public eventsMap(): { [key: string]: () => void } {
+    return {};
   }
 
   public bindModel(): void {
@@ -30,20 +40,28 @@ export abstract class View<T extends Model<K>, K> {
     }
   }
 
-  public regionMap(): void {}
-
-  public eventsMap(): { [key: string]: () => void } {
-    return {};
+  public mapRegions(fragment: DocumentFragment): void {
+    const regionsMap = this.regionsMap();
+    for (let key in regionsMap) {
+      const selector = regionsMap[key];
+      const element = fragment.querySelector(selector);
+      if (element) {
+        this.regions[key] = element;
+      }
+    }
   }
 
   public render(): void {
     this.parent.innerHTML = "";
     // make string to html template elelments
+    // our fragment
     const templateElement = document.createElement("template");
     templateElement.innerHTML = this.template();
     // we should add event handler to html
     // content is DocumentFragment type = hold some html memory before attch to dom ==> use helper
     this.bindEvents(templateElement.content); // pass doc frag created by template();
+    // helper method
+    this.mapRegions(templateElement.content);
     this.parent.append(templateElement.content);
   }
 }
