@@ -1,14 +1,28 @@
-import { User } from "../models/User";
-//
-export class UserForm {
-  constructor(public parent: Element, public model: User) {}
-
+import { View } from "./View";
+import { User, UserProps } from "../models/User";
+// when we have bio directional relationship maybe compsition is not good
+export class UserForm extends View<User, UserProps> {
   public eventsMap(): { [key: string]: () => void } {
     return {
       // left side of string become query selector all
-      "click:.set-age": this.onSetAgeClick
+      // all event handler go to be arrow functions
+      "click:.set-age": this.onSetAgeClick,
+      "click:.set-name": this.onSetNameClick,
+      "click:.save-model": this.onSaveClick
     };
   }
+
+  public onSaveClick = (): void => {
+    this.model.save();
+  };
+
+  public onSetNameClick = (): void => {
+    const input = this.parent.querySelector("input");
+    if (input) {
+      const name = input.value;
+      this.model.set({ name });
+    }
+  };
 
   public onSetAgeClick = (): void => {
     this.model.setRandomAge();
@@ -17,34 +31,14 @@ export class UserForm {
   public template(): string {
     return `
       <div>
-        <h1>user</h1>
-        <div>user name: ${this.model.get("name")}</div>
-        <div>user age: ${this.model.get("age")}</div>
-        <input/>
-        <button>click me</button>
+        <input placeholder="${this.model.get("name")}"/>
+        <br>
+        <button class="set-name">update name</button>
+        <br>
         <button class="set-age">set random age</button>
+        <br>
+        <button class="save-model">save</button>
       </div>
     `;
-  }
-
-  // helper method for use before insert to dom to add events
-  public bindEvents(fragment: DocumentFragment): void {
-    const eventsMap = this.eventsMap();
-    for (let eventKey in eventsMap) {
-      const [eventName, selector] = eventKey.split(":");
-      fragment.querySelectorAll(selector).forEach(el => {
-        el.addEventListener(eventName, eventsMap[eventKey]);
-      });
-    }
-  }
-
-  public render(): void {
-    // make string to html template elelments
-    const templateElement = document.createElement("template");
-    templateElement.innerHTML = this.template();
-    // we should add event handler to html
-    // content is DocumentFragment type = hold some html memory before attch to dom ==> use helper
-    this.bindEvents(templateElement.content); // pass doc frag created by template();
-    this.parent.append(templateElement.content);
   }
 }
