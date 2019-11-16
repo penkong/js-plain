@@ -13,7 +13,8 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^5.0.0",
-    "nodemon": "^1.19.4"
+    "nodemon": "^1.19.4",
+    "reflect-metadata": "^0.1.13"
   },
   "dependencies": {
     "@types/body-parser": "^1.17.1",

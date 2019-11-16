@@ -1,7 +1,10 @@
 import express from "express";
 import bodyParser from "body-parser";
 import cookieSession from "cookie-session";
-import { router } from "./routes/loginRoute-norm";
+import { router } from "./routes/loginRoutes";
+import { AppRouter } from "./AppRouter";
+//
+import "./controllers/LoginController";
 
 const app = express();
 
@@ -10,11 +13,10 @@ app.use(
     extended: true
   })
 );
-
 app.use(cookieSession({ keys: ["fsdfsdfh"] }));
-
 app.use(router);
-
+app.use(AppRouter.getInstance());
+// ----------------------------------------------------------------
 app.listen(3000, () => {
   console.log("listening on port 3000.");
 });
