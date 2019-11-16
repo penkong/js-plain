@@ -1,6 +1,15 @@
 import { Router, Request, Response, NextFunction } from "express";
 //
-
+// to decorator know sequence we add to each decorator some config object
+// like called metadata
+// last decorator to exec must be class decorator
+// class decorator reads metadata from each method adds route definition to
+// router express.
+// metadata
+// add to js also, a snippet of info that can be tied to a method prop or
+// class definition.
+// metadata preserve data we want pass from ts to js , it dont wipe out
+// for read and write metadata we using pkg : reflect-metadata
 interface RequestWithBody extends Request {
   body: { [key: string]: string | undefined };
 }
