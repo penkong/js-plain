@@ -5,6 +5,7 @@ import cookieSession from "cookie-session";
 import { AppRouter } from "./AppRouter";
 //
 import "./controllers/LoginController";
+import "./controllers/RootController";
 
 const app = express();
 
