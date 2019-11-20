@@ -3,7 +3,7 @@
 // declare namespace means there will be a global var named sth
 import { User } from "./User";
 import { Company } from "./Company";
-import { GMap } from "./Map";
+import { GMap } from "./GMap";
 
 const user = new User();
 const company = new Company();

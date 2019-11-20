@@ -1,4 +1,5 @@
 //
+import "../node_modules/@types/googlemaps/index";
 // it 's gatekeeper for Gmap
 // instruction to every other class and how satisfy it.
 export interface Mappable {
@@ -9,7 +10,7 @@ export interface Mappable {
   markerContent(): string;
   color?: string;
 }
-
+// --------------------------------------------------------------------
 export class GMap {
   private googleMap: google.maps.Map;
 
@@ -24,6 +25,7 @@ export class GMap {
   }
 
   public addMarker(mappable: Mappable): void {
+    //
     const marker = new google.maps.Marker({
       map: this.googleMap,
       position: {

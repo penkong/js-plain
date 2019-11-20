@@ -1,7 +1,7 @@
 // you must get types for every package for let ts know to help you.
 // type definition file. @types/{lib name} from definitely type project.
 import faker from "faker";
-import { Mappable } from "./Map";
+import { Mappable } from "./GMap";
 
 // we use implements to set boundry for ts when we have error show exactly where it happen.
 export class User implements Mappable {
@@ -12,14 +12,10 @@ export class User implements Mappable {
   };
   // color: string = 'red';
   constructor() {
-    const {
-      name: { firstName },
-      address: { latitude, longitude }
-    } = faker;
-    this.name = firstName();
+    this.name = faker.name.firstName();
     this.location = {
-      lat: parseFloat(latitude()),
-      lng: parseFloat(longitude())
+      lat: parseFloat(faker.address.latitude()),
+      lng: parseFloat(faker.address.longitude())
     };
   }
 

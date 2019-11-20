@@ -1,7 +1,7 @@
 // you must get types for every package for let ts know to help you.
 // type definition file. @types/{lib name} from definitely type project.
 import faker from "faker";
-import { Mappable } from "./Map";
+import { Mappable } from "./GMap";
 
 export class Company implements Mappable {
   companyName: string;
@@ -12,15 +12,11 @@ export class Company implements Mappable {
   };
 
   constructor() {
-    const {
-      company: { companyName, catchPhrase },
-      address: { latitude, longitude }
-    } = faker;
-    this.companyName = companyName();
-    this.catchPhrase = catchPhrase();
+    this.companyName = faker.company.companyName();
+    this.catchPhrase = faker.company.catchPhrase();
     this.location = {
-      lat: parseFloat(latitude()),
-      lng: parseFloat(longitude())
+      lat: parseFloat(faker.address.latitude()),
+      lng: parseFloat(faker.address.longitude())
     };
   }
 

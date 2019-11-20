@@ -2,6 +2,7 @@ import { Analyzer } from "../Summary";
 import { MatchData } from "../types/MatchData";
 import { MatchResult } from "../Enums/MatchResult";
 //
+// analyzer is a interface
 export class WinAnalysis implements Analyzer {
   constructor(public team: string) {}
 

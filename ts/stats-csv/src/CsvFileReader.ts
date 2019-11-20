@@ -1,7 +1,7 @@
 import fs from "fs";
 // it is enum
 
-export class CsvReader {
+export class CsvFileReader {
   data: string[][] = [];
 
   constructor(public filename: string) {}
