@@ -4,6 +4,7 @@ export type Cb = () => void;
 export class Eventing {
   events: { [key: string]: Cb[] } = {};
 
+  // on == addEventListener
   public on = (eventName: string, cb: Cb): void => {
     const handlers = this.events[eventName] || [];
     handlers.push(cb);

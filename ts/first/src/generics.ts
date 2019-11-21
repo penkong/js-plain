@@ -10,7 +10,7 @@ class ArrOfNum {
 class ArrOfString {
   constructor(public collection: string[]) {}
 
-  get(index: string): string {
+  get(index: number): string {
     return this.collection[index];
   }
 }
@@ -39,7 +39,7 @@ class House {
     console.log("HOuse");
   }
 }
-
+// ------------------------------------------------------------------
 interface Printable {
   print(): void;
 }

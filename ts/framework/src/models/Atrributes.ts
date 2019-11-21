@@ -6,7 +6,7 @@ export class Attributes<T> {
   public getAll(): T {
     return this.data;
   }
-
+  // key == propName
   // this is generic constraints ------- object lookup
   public get = <K extends keyof T>(key: K): T[K] => {
     return this.data[key];

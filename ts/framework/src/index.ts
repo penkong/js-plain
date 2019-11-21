@@ -1,6 +1,4 @@
 import { User, UserProps } from "./models/User";
-// import { UserForm } from "./views/UserForm";
-import { UserEdit } from "./views/UserEdit";
 import { UserList } from "./views/UserList";
 import { Collection } from "./models/Collection";
 // for make model and generalize works use composition

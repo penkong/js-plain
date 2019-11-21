@@ -33,7 +33,13 @@ export class Model<T extends HasId> {
     private events: Events,
     private sync: Sync<T>
   ) {}
+  // ---------ATTRIBUTES-------------
+  get = this.attributes.get;
 
+  public set(update: T): void {
+    this.attributes.set(update);
+    this.events.trigger("change");
+  }
   // ----------EVENTING-----------
   // public get on() {
   //   return this.events.on;
@@ -44,17 +50,9 @@ export class Model<T extends HasId> {
 
   trigger = this.events.trigger;
 
-  // ---------ATTRIBUTES-------------
-  get = this.attributes.get;
-
-  public set(update: T): void {
-    this.attributes.set(update);
-    this.events.trigger("change");
-  }
-
   // --------SYNC------------
   public fetch(): void {
-    const id = this.attributes.get("id");
+    const id = this.get("id");
     // if there is no id , undefined null
     if (typeof id !== "number") {
       throw new Error("can not fetch without an id");
