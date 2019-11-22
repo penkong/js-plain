@@ -1,6 +1,7 @@
 import { get, controller, use } from "./decorators";
 import { Response, Request, NextFunction } from "express";
 
+// because of body maybe undefined we add this it not defined on express types
 interface RequestWithBody extends Request {
   body: { [key: string]: string | undefined };
 }

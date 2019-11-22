@@ -30,6 +30,7 @@ export class User extends Model<UserProps> {
     );
   }
   // ---------------------------------------------------------------
+  // it is best practice to add mutation logic from view to class itself rather than implement on view
   // because of probably more useage by other app we add
   // random age on class model itself
   public setRandomAge(): void {

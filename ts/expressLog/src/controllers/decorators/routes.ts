@@ -1,10 +1,13 @@
 import "reflect-metadata";
+// enums
 import { Methods } from "./Methods";
 import { MetaDataKeys } from "./MetaDataKeys";
+// types
 import { RequestHandler } from "express";
 
 interface RouteHandlerDescriptor extends PropertyDescriptor {
-  value?: RequestHandler; //take request and response
+  // req , res , next
+  value?: RequestHandler;
 }
 
 // factory decorator
@@ -14,6 +17,7 @@ function routeFinder(method: string) {
     return function(
       target: any,
       key: string,
+      // descriptor will be req obj or res or next
       descriptor: RouteHandlerDescriptor
     ) {
       Reflect.defineMetadata(MetaDataKeys.path, path, target, key);

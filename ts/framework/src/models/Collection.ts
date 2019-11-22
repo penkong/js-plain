@@ -7,7 +7,7 @@ import { AxiosResponse } from "axios";
 export class Collection<T, K> {
   // it will go to have list of all users
   // models is list of all users
-  // User []
+  // User [] == Users
   models: T[] = [];
   events: Eventing = new Eventing();
 

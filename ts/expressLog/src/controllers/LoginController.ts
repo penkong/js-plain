@@ -1,17 +1,17 @@
 //
 import { Request, Response, NextFunction } from "express";
-import { get, controller, post, bodyValidator } from "./decorators";
+import { get, controller, post, bodyValidator, use } from "./decorators";
 // import { use } from "./decorators/use";
 
 interface RequestWithBody extends Request {
   body: { [key: string]: string | undefined };
 }
-//
-// function logger(req: Request, res: Response, next: NextFunction) {
-//   console.log("req");
-//   next();
-// }
-//
+
+function logger(req: Request, res: Response, next: NextFunction) {
+  console.log("req");
+  next();
+}
+
 @controller("/auth")
 class LoginController {
   // @get("/")
@@ -21,19 +21,19 @@ class LoginController {
 
   //
   @get("/login")
-  // @use(logger)
+  @use(logger)
   getLogin(req: Request, res: Response): void {
     res.send(`
     <form method="POST">
-    <div>
-    <label>Email</label>
-    <input name="email"/>
-    </div>
-    <div>
-    <label>Password</label>
-    <input name="password" type="password"/>
-    </div>
-    <button>Submit</button>
+      <div>
+        <label>Email</label>
+        <input name="email"/>
+      </div>
+      <div>
+        <label>Password</label>
+        <input name="password" type="password"/>
+      </div>
+      <button>Submit</button>
     </form>
     `);
   }
