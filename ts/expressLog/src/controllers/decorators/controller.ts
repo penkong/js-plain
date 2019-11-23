@@ -29,15 +29,17 @@ function bodyValidators(keys: string[]): RequestHandler {
 // decorator for class add to constructor
 // decorator for methods add to fucntion.prototype
 export function controller(routePrefix: string) {
-  //
+  // for class we consider target as constructor of class "typeof className"
   return function(target: Function) {
     // pull up middlewares
     const router = AppRouter.getInstance();
-
+    // keys in target.prototype are methods
+    // means loop over methods
     for (let key in target.prototype) {
-      // name of methods
+      // name of methods like getLogin or postLogin
       const routeHandler = target.prototype[key];
-      //
+      // on define use target
+      // on getMeta use target.prototype
       const path = Reflect.getMetadata(
         MetaDataKeys.path,
         target.prototype,

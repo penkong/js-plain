@@ -5,6 +5,8 @@ import { MetaDataKeys } from "./MetaDataKeys";
 // types
 import { RequestHandler } from "express";
 
+// because of add or wierd fucntion call as route we use interface
+// to make value RequestHandler style .
 interface RouteHandlerDescriptor extends PropertyDescriptor {
   // req , res , next
   value?: RequestHandler;

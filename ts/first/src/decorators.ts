@@ -24,7 +24,7 @@ class Boat {
     speed === "fast" ? console.log("fast") : console.log("lazy");
     // throw new Error();
     console.log("swww");
-    // method end  and whole of it is desc.value
+    // method end  and whole of it is descriptor.value
   }
 }
 // first arg is protoype of object => prototype of class Boat
@@ -63,7 +63,7 @@ function logError(errorMessage: string) {
     };
   };
 }
-
+// target is prototype can see it by ts-node clg
 function testDecorator(target: any, key: string): void {
   // prototype only stores methods not props then you can not get props
   // from target it store in constructor
