@@ -1,30 +1,54 @@
-// generics
-// flexible and re-use code.
-// generic is type related to another type
-// Array is type and string is generic
-// string [] = Array <string>
-const names: Array<string> = ["mk", "z"];
-// another generic type is built in ts is Promise
-// Promise type
-// with generic give info to types
-const promise: Promise<string> = new Promise((resolve, reject) => {
-  setTimeout(() => {
-    resolve("this is done!");
-  }, 2000);
-});
-// because of generic can inform ts from split;
-promise.then(data => {
-  data.split("");
-});
-// ==========================================
-// own generic == creating
-// generic function and generic class
-// --------
-// constraints : add it to generics with extends
-function merged<T extends object, U extends object>(objA: T, objB: U): T & U {
-  return Object.assign(objA, objB);
+// Decorators
+// meta-programming
+// maybe we don't want impact user let reuse code easier
+// hidden transformation.
+// can add to class
+// at base it's function that you apply to sth;
+
+// for decorator add to class we take one arguemnt
+// target: is construcntor function
+function Logger(target: Function) {
+  console.log("logging");
+  console.log(target);
+}
+// decorator exe when class defined not when instantiated.
+
+// next step decorator factory : it return dec function
+// allow us to configure more when add to sth;
+
+// allow us to add arg to decorator.
+function Loggered(logString: string) {
+  return function(target: Function) {
+    console.log(logString);
+    console.log(target);
+  };
 }
 
-// now we can not access props because ts dont know
-// but with generic we can
-const mergedObj = merged({ name: "mk" }, { age: 3 });
+function WithTemplate(template: string, hookId: string) {
+  // _ underscore signal to ts i dont need it.
+  return function(target: any) {
+    const element = document.getElementById(hookId);
+    // e.x . to add name to class use this technic
+    const p = new target();
+    if (element) {
+      element.innerHTML = template;
+      element.querySelector("h1")!.textContent = p.name;
+    }
+  };
+}
+// in creation and call decorators is top to bottom
+// but in execution is bottom to top
+
+@Logger
+@Loggered("hellowww from 2")
+@WithTemplate("<h1>we add html here</h1>", "app")
+class Persona {
+  name = "max";
+
+  constructor() {
+    console.log("creating new Person ...");
+  }
+}
+
+const persona = new Persona();
+console.log(persona);
