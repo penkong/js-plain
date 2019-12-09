@@ -1,0 +1,25 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+label,
+input,
+textarea {
+  display: block;
+  margin: 0 0.5rem 0;
+}
+
+#user-input {
+  margin: 1rem;
+  padding: 1rem;
+  border: 1px solid red;
+  background-color: #f7f7ff;
+}
