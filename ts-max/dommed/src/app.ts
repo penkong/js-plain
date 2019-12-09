@@ -82,14 +82,26 @@ class Project {
 
 // ==========================================================
 // Project state management : singletons
-type Listener = (items: Project[]) => void;
+// we dont know in future listener back us arr of projects or els //
+// therefore use of generics
 
-class ProjectState {
+type Listener<T> = (items: T[]) => void;
+
+class State<T> {
+  protected listeners: Listener<T>[] = [];
+  addListener(listenerFn: Listener<T>) {
+    this.listeners.push(listenerFn);
+  }
+}
+
+class ProjectState extends State<Project> {
   // subscription pattern by listeners list of funcs
-  private listeners: Listener[] = [];
+  // private listeners: Listener[] = [];
   private projects: any[] = [];
   private static instance: ProjectState;
-  private constructor() {}
+  private constructor() {
+    super();
+  }
 
   static getInstance() {
     if (this.instance) {
@@ -99,9 +111,9 @@ class ProjectState {
     return this.instance;
   }
 
-  addListener(listenerFn: Listener) {
-    this.listeners.push(listenerFn);
-  }
+  // addListener(listenerFn: Listener) {
+  //   this.listeners.push(listenerFn);
+  // }
 
   addProject(title: string, description: string, numOfPeople: number) {
     const newProject = new Project(
@@ -123,49 +135,68 @@ const projectState = ProjectState.getInstance();
 
 // ==========================================================
 // Component Base class
-class Component<T extends HTMLElement, U extends HTMLElement> {
+abstract class Component<T extends HTMLElement, U extends HTMLElement> {
   tempEl: HTMLTemplateElement;
   hostEl: T;
   el: U;
 
-  constructor(templateId: string, hostElId: string, newElId?: string) {
+  constructor(
+    templateId: string,
+    hostElId: string,
+    insertAtStart: boolean,
+    newElId?: string
+  ) {
     this.tempEl = <HTMLTemplateElement>document.getElementById(templateId)!;
     this.hostEl = <T>document.getElementById(hostElId)!;
     const importedNode = document.importNode(this.tempEl.content, true);
-    // ---------------------------
-    // this point to real element we want that form inside template
-    this.el = <HTMLFormElement>importedNode.firstElementChild;
-    this.el.id = "user-input";
+    this.el = <U>importedNode.firstElementChild;
+    if (newElId) {
+      this.el.id = newElId;
+    }
+    this.attach(insertAtStart);
+  }
+
+  // can be private
+  abstract renderContent(): void;
+  abstract configure(): void;
+
+  // load up to dom
+  private attach(insertAtBegining: boolean) {
+    this.hostEl.insertAdjacentElement(
+      insertAtBegining ? "afterbegin" : "beforeend",
+      this.el
+    );
   }
 }
 
 // ==========================================================
 // responsible for handling logic for app;
-class ProjectInput {
+class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
   // ----------------------------------
   // goal of this class to get access form and template and
   // and to access div render template to div#app
-  tempEl: HTMLTemplateElement;
-  hostEl: HTMLDivElement;
-  el: HTMLFormElement;
+  // tempEl: HTMLTemplateElement;
+  // hostEl: HTMLDivElement;
+  // el: HTMLFormElement;
   titleInputEl: HTMLInputElement;
   descriptionInputEl: HTMLInputElement;
   peopleInputEL: HTMLInputElement;
 
   // ------------------------------------------
   constructor() {
-    this.tempEl = <HTMLTemplateElement>(
-      document.getElementById("project-input")!
-    );
-    this.hostEl = <HTMLDivElement>document.getElementById("app")!;
+    super("project-input", "app", true, "user-input");
+    // this.tempEl = <HTMLTemplateElement>(
+    //   document.getElementById("project-input")!
+    // );
+    // this.hostEl = <HTMLDivElement>document.getElementById("app")!;
     // ------------------------------
     // to immedietly run content of template to dom on making class we use it on constructor
     // true == means do with deep clone;
-    const importedNode = document.importNode(this.tempEl.content, true);
+    // const importedNode = document.importNode(this.tempEl.content, true);
     // ---------------------------
     // this point to real element we want that form inside template
-    this.el = <HTMLFormElement>importedNode.firstElementChild;
-    this.el.id = "user-input";
+    // this.el = <HTMLFormElement>importedNode.firstElementChild;
+    // this.el.id = "user-input";
     // ------------------------------
     // select element of form to future usage
     this.titleInputEl = <HTMLInputElement>this.el.querySelector("#title");
@@ -176,7 +207,6 @@ class ProjectInput {
     // ----------------------------------
     // logic
     this.configure();
-    this.attach();
   }
 
   // take all user input + validation
@@ -236,43 +266,102 @@ class ProjectInput {
   }
 
   // catch all config on event listener
-  private configure() {
+  configure() {
     this.el.addEventListener("submit", this.submitHandler);
   }
 
+  renderContent() {}
   // load up to dom
-  private attach() {
-    this.hostEl.insertAdjacentElement("afterbegin", this.el);
+  // private attach() {
+  //   this.hostEl.insertAdjacentElement("afterbegin", this.el);
+  // }
+}
+
+// ==========================================================
+// for rendering single item
+class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> {
+  private project: Project;
+  constructor(hostId: string, project: Project) {
+    super("single-project", hostId, false, project.id);
+    this.project = project;
+    this.configure();
+    this.renderContent();
+  }
+
+  configure() {}
+
+  renderContent() {
+    this.el.querySelector("h2")!.textContent = this.project.title;
+    this.el.querySelector("h3")!.textContent = this.project.people.toString();
+    this.el.querySelector("p")!.textContent = this.project.description;
   }
 }
 
 // ==========================================================
-class ProjectSingle {}
-
-// ==========================================================
 // Project List class
 // responsible to out put to screen;
-class ProjectList {
+class ProjectList extends Component<HTMLDivElement, HTMLElement> {
   //
-  tempEl: HTMLTemplateElement;
-  hostEl: HTMLDivElement;
-  el: HTMLElement;
-  assignedProjects: Project[];
+  // tempEl: HTMLTemplateElement;
+  // hostEl: HTMLDivElement;
+  // el: HTMLElement;
+  assignedProjects: Project[] = [];
 
   // for id there is two kind of project active and inactive
   constructor(private type: "active" | "finished") {
-    this.tempEl = <HTMLTemplateElement>document.getElementById("project-list")!;
-    this.hostEl = <HTMLDivElement>document.getElementById("app")!;
+    // before super finish runnig we can not use this;
+    // point
+    super("project-list", "app", false, `${type}-projects`);
+    // this.tempEl = <HTMLTemplateElement>document.getElementById("project-list")!;
+    // this.hostEl = <HTMLDivElement>document.getElementById("app")!;
     // ------------------------------
     // to immedietly run content of template to dom on making class we use it on constructor
     // true == means do with deep clone;
-    const importedNode = document.importNode(this.tempEl.content, true);
+    // const importedNode = document.importNode(this.tempEl.content, true);
     // ---------------------------/
     // this point to real element we want that form inside template
-    this.el = <HTMLElement>importedNode.firstElementChild;
-    this.el.id = `${this.type}-projects`;
+    // this.el = <HTMLElement>importedNode.firstElementChild;
+    // this.el.id = `${this.type}-projects`;
     // list of projects come from top
-    this.assignedProjects = [];
+    // this.assignedProjects = [];
+    // projectState.addListener((projects: Project[]) => {
+    //   const relevantProjects = projects.filter(proj => {
+    //     if (this.type === "active") {
+    //       return proj.status === ProjectStatus.Active;
+    //     }
+    //     return proj.status === ProjectStatus.Finished;
+    //   });
+    //   this.assignedProjects = relevantProjects;
+    //   this.renderProjects();
+    // });
+    //
+    // this.attach();
+    this.configure();
+    this.renderContent();
+  }
+
+  private renderProjects() {
+    const listEl = <HTMLUListElement>(
+      document.getElementById(`${this.type}-projects-list`)!
+    );
+    listEl.innerHTML = "";
+    for (const projItem of this.assignedProjects) {
+      // const listItem = document.createElement("li");
+      // listItem.textContent = projItem.title;
+      // listEl.appendChild(listItem);
+      new ProjectItem(this.el.querySelector("ul")!.id, projItem);
+    }
+  }
+
+  // render content base of type of project
+  renderContent() {
+    const listId = `${this.type}-projects-list`;
+    this.el.querySelector("ul")!.id = listId;
+    this.el.querySelector("h2")!.textContent =
+      this.type.toUpperCase() + "PROJECTS";
+  }
+
+  configure() {
     projectState.addListener((projects: Project[]) => {
       const relevantProjects = projects.filter(proj => {
         if (this.type === "active") {
@@ -283,35 +372,12 @@ class ProjectList {
       this.assignedProjects = relevantProjects;
       this.renderProjects();
     });
-    //
-    this.attach();
-    this.renderContent();
-  }
-
-  private renderProjects() {
-    const listEl = <HTMLUListElement>(
-      document.getElementById(`${this.type}-projects-list`)!
-    );
-    listEl.innerHTML = "";
-    for (const projItem of this.assignedProjects) {
-      const listItem = document.createElement("li");
-      listItem.textContent = projItem.title;
-      listEl.appendChild(listItem);
-    }
-  }
-
-  // render content base of type of project
-  private renderContent() {
-    const listId = `${this.type}-projects-list`;
-    this.el.querySelector("ul")!.id = listId;
-    this.el.querySelector("h2")!.textContent =
-      this.type.toUpperCase() + "PROJECTS";
   }
 
   // attach to dom;
-  private attach() {
-    this.hostEl.insertAdjacentElement("beforeend", this.el);
-  }
+  // private attach() {
+  //   this.hostEl.insertAdjacentElement("beforeend", this.el);
+  // }
 }
 
 // =======================================================
