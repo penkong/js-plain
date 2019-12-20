@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: black;
+        color: white;
+        font: 1rem "arial";
+      }
+
+      .tabbed {
+        width: 600px;
+        margin: 50px auto;
+      }
+
+      .tabbed > input {
+        display: none;
+      }
+
+      .tabbed > label {
+        display: block;
+        float: left;
+        padding: 12px 20px;
+        margin-right: 10px;
+        cursor: pointer;
+        transition: background-color 0.5s;
+      }
+
+      .tabbed > label:hover,
+      .tabbed > input:checked + label {
+        background: #e91e73;
+      }
+
+      .tabs {
+        clear: both;
+        perspective: 599px;
+        margin-left: -50px;
+      }
+      .tabs > div {
+        width: 780px;
+        position: absolute;
+        border: 4px solid #e91e73;
+        padding: 10px 30px;
+        line-height: 1.5;
+        opacity: 0;
+        transform: rotateX(-20deg);
+        transform-origin: top center;
+        transition: opactiy 0.3s, transform 1s;
+        border-radius: 50px;
+      }
+
+      #tab-nav-1:checked ~ .tabs > div:nth-of-type(1),
+      #tab-nav-2:checked ~ .tabs > div:nth-of-type(2),
+      #tab-nav-3:checked ~ .tabs > div:nth-of-type(3),
+      #tab-nav-4:checked ~ .tabs > div:nth-of-type(4) {
+        transform: rotateX(0);
+        opacity: 1;
+        z-index: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="tabbed">
+      <input type="radio" name="tabs" id="tab-nav-1" checked />
+      <label for="tab-nav-1">html</label>
+      <input type="radio" name="tabs" id="tab-nav-2" />
+      <label for="tab-nav-2">css</label>
+      <input type="radio" name="tabs" id="tab-nav-3" />
+      <label for="tab-nav-3">js</label>
+      <input type="radio" name="tabs" id="tab-nav-4" />
+      <label for="tab-nav-4">sass</label>
+      <div class="tabs">
+        <div>
+          <h2>html</h2>
+          <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt,
+            ipsam at recusandae animi consequatur, a aliquid, voluptatibus
+            numquam iusto iste vero repellat magni! Quibusdam nobis esse
+            inventore mollitia culpa, numquam totam dolorum ab natus nulla
+            magnam, suscipit omnis vero eos!
+          </p>
+          <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt,
+            ipsam at recusandae animi consequatur, a aliquid, voluptatibus
+            numquam iusto iste vero repellat magni! Quibusdam nobis esse
+            inventore mollitia culpa, numquam totam dolorum ab natus nulla
+            magnam, suscipit omnis vero eos!
+          </p>
+          <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt,
+            ipsam at recusandae animi consequatur, a aliquid, voluptatibus
+            numquam iusto iste vero repellat magni! Quibusdam nobis esse
+            inventore mollitia culpa, numquam totam dolorum ab natus nulla
+            magnam, suscipit omnis vero eos!
+          </p>
+        </div>
+        <div>
+          <h2>css</h2>
+          <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt,
+            ipsam at recusandae animi consequatur, a aliquid, voluptatibus
+            numquam iusto iste vero repellat magni! Quibusdam nobis esse
+            inventore mollitia culpa, numquam totam dolorum ab natus nulla
+            magnam, suscipit omnis vero eos!
+          </p>
+          <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt,
+            ipsam at recusandae animi consequatur, a aliquid, voluptatibus
+            numquam iusto iste vero repellat magni! Quibusdam nobis esse
+            inventore mollitia culpa, numquam totam dolorum ab natus nulla
+            magnam, suscipit omnis vero eos!
+          </p>
+          <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt,
+            ipsam at recusandae animi consequatur, a aliquid, voluptatibus
+            numquam iusto iste vero repellat magni! Quibusdam nobis esse
+            inventore mollitia culpa, numquam totam dolorum ab natus nulla
+            magnam, suscipit omnis vero eos!
+          </p>
+        </div>
+        <div>
+          <h2>js</h2>
+          <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt,
+            ipsam at recusandae animi consequatur, a aliquid, voluptatibus
+            numquam iusto iste vero repellat magni! Quibusdam nobis esse
+            inventore mollitia culpa, numquam totam dolorum ab natus nulla
+            magnam, suscipit omnis vero eos!
+          </p>
+          <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt,
+            ipsam at recusandae animi consequatur, a aliquid, voluptatibus
+            numquam iusto iste vero repellat magni! Quibusdam nobis esse
+            inventore mollitia culpa, numquam totam dolorum ab natus nulla
+            magnam, suscipit omnis vero eos!
+          </p>
+          <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt,
+            ipsam at recusandae animi consequatur, a aliquid, voluptatibus
+            numquam iusto iste vero repellat magni! Quibusdam nobis esse
+            inventore mollitia culpa, numquam totam dolorum ab natus nulla
+            magnam, suscipit omnis vero eos!
+          </p>
+        </div>
+        <div>
+          <h2>sass</h2>
+          <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt,
+            ipsam at recusandae animi consequatur, a aliquid, voluptatibus
+            numquam iusto iste vero repellat magni! Quibusdam nobis esse
+            inventore mollitia culpa, numquam totam dolorum ab natus nulla
+            magnam, suscipit omnis vero eos!
+          </p>
+          <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt,
+            ipsam at recusandae animi consequatur, a aliquid, voluptatibus
+            numquam iusto iste vero repellat magni! Quibusdam nobis esse
+            inventore mollitia culpa, numquam totam dolorum ab natus nulla
+            magnam, suscipit omnis vero eos!
+          </p>
+          <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deserunt,
+            ipsam at recusandae animi consequatur, a aliquid, voluptatibus
+            numquam iusto iste vero repellat magni! Quibusdam nobis esse
+            inventore mollitia culpa, numquam totam dolorum ab natus nulla
+            magnam, suscipit omnis vero eos!
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
